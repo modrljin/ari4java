@@ -203,6 +203,7 @@ public class NettyHttpClient implements HttpClient, WsClient, WsClientAutoReconn
             ch = bootStrap.connect(baseUri.getHost(), baseUri.getPort()).sync().channel();
             NettyHttpClientHandler handler = (NettyHttpClientHandler) ch.pipeline().get("http-handler");
             ch.writeAndFlush(request);
+            //System.out.println(new SimpleDateFormat("yy-MM-dd HH:mm:ss.SSS").format(new Date()) + " - Sent ARI request: " + request.toString());
             ch.closeFuture().sync();
             if ( httpResponseOkay(handler.getResponseStatus())) {
                 return handler.getResponseText();
