@@ -1,7 +1,5 @@
 package ch.loway.oss.ari4java.tools.http;
 
-import ch.loway.oss.ari4java.tools.*;
-import ch.loway.oss.ari4java.tools.HttpResponse;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
@@ -14,8 +12,21 @@ import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioSocketChannel;
-import io.netty.handler.codec.http.*;
-import io.netty.handler.codec.http.websocketx.*;
+import io.netty.handler.codec.http.DefaultFullHttpRequest;
+import io.netty.handler.codec.http.FullHttpRequest;
+import io.netty.handler.codec.http.HttpClientCodec;
+import io.netty.handler.codec.http.HttpHeaders;
+import io.netty.handler.codec.http.HttpMethod;
+import io.netty.handler.codec.http.HttpObjectAggregator;
+import io.netty.handler.codec.http.HttpRequest;
+import io.netty.handler.codec.http.HttpResponseStatus;
+import io.netty.handler.codec.http.HttpVersion;
+import io.netty.handler.codec.http.websocketx.CloseWebSocketFrame;
+import io.netty.handler.codec.http.websocketx.PingWebSocketFrame;
+import io.netty.handler.codec.http.websocketx.WebSocketClientHandshaker;
+import io.netty.handler.codec.http.websocketx.WebSocketClientHandshakerFactory;
+import io.netty.handler.codec.http.websocketx.WebSocketFrame;
+import io.netty.handler.codec.http.websocketx.WebSocketVersion;
 import io.netty.util.concurrent.ScheduledFuture;
 
 import java.io.UnsupportedEncodingException;
@@ -26,6 +37,16 @@ import java.nio.charset.StandardCharsets;
 import java.util.Iterator;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
+
+import org.apache.log4j.Logger;
+
+import ch.loway.oss.ari4java.tools.HttpClient;
+import ch.loway.oss.ari4java.tools.HttpParam;
+import ch.loway.oss.ari4java.tools.HttpResponse;
+import ch.loway.oss.ari4java.tools.HttpResponseHandler;
+import ch.loway.oss.ari4java.tools.RestException;
+import ch.loway.oss.ari4java.tools.WsClient;
+import ch.loway.oss.ari4java.tools.WsClientAutoReconnect;
 
 /**
  * HTTP and WebSocket client implementation based on netty.io.
@@ -40,6 +61,8 @@ import java.util.concurrent.TimeUnit;
  */
 public class NettyHttpClient implements HttpClient, WsClient, WsClientAutoReconnect {
 
+	private Logger log = Logger.getLogger(NettyHttpClient.class);
+	
     public static final int MAX_HTTP_REQUEST_KB = 256;
     
     private Bootstrap bootStrap;
@@ -53,7 +76,8 @@ public class NettyHttpClient implements HttpClient, WsClient, WsClientAutoReconn
     private String wsEventsUrl;
     private List<HttpParam> wsEventsParamQuery;
     private WsClientConnection wsClientConnection;
-    private int reconnectCount = 0;
+    private int wsReconnectCount;
+    private int maxWsReconnectCount; // negative value = permanent reconnect tries
     private ChannelFuture wsChannelFuture;
     private ScheduledFuture<?> wsPingTimer = null;
     private NettyWSClientHandler wsHandler;
@@ -267,6 +291,8 @@ public class NettyHttpClient implements HttpClient, WsClient, WsClientAutoReconn
     @Override
     public WsClientConnection connect(final HttpResponseHandler callback, final String url, final List<HttpParam> lParamQuery) throws RestException {
 
+    	log.info("** connecting to " + baseUri.getHost() + ":" + baseUri.getPort());
+    	
         this.wsCallback = callback;
         this.wsEventsUrl = url;
         this.wsEventsParamQuery = lParamQuery;
@@ -296,11 +322,13 @@ public class NettyHttpClient implements HttpClient, WsClient, WsClientAutoReconn
             public void operationComplete(ChannelFuture future) throws Exception {
                 if (future.isSuccess()) {
                     callback.onChReadyToWrite();
+                    callback.onConnect();
                     // reset the reconnect counter on successful connect
-                    reconnectCount = 0;
+                    wsReconnectCount = 0;
                 } else {
-                    if (reconnectCount >= 10) {
+                    if (maxWsReconnectCount > -1 && wsReconnectCount >= maxWsReconnectCount) {
                         callback.onFailure(future.cause());
+                        callback.onReconnectStopped();
                     } else {
                         reconnectWs();
                     }
@@ -321,14 +349,14 @@ public class NettyHttpClient implements HttpClient, WsClient, WsClientAutoReconn
             wsPingTimer = group.scheduleAtFixedRate(new Runnable() {
                 @Override
                 public void run() {
-                    if (System.currentTimeMillis() - wsCallback.getLastResponseTime() > 15000) {
+                    if (System.currentTimeMillis() - wsCallback.getLastResponseTime() > 5000) {
                         if (!wsChannelFuture.isCancelled() && wsChannelFuture.channel() != null) {
                             WebSocketFrame frame = new PingWebSocketFrame(Unpooled.wrappedBuffer("ari4j".getBytes( StandardCharsets.UTF_8 )));
                             wsChannelFuture.channel().writeAndFlush(frame);
                         }
                     }
                 }
-            }, 5, 5, TimeUnit.MINUTES);
+            }, 10, 10, TimeUnit.SECONDS);
         }
     }
 
@@ -386,21 +414,34 @@ public class NettyHttpClient implements HttpClient, WsClient, WsClientAutoReconn
         if (!group.isShuttingDown()) {
             // schedule reconnect after a 2,5,10 seconds
             long[] timeouts = {2L, 5L, 10L};
-            reconnectCount++;
+            wsReconnectCount++;
             shutDownGroup.schedule(new Runnable() {
                 @Override
                 public void run() {
                     try {
                         // 1st close up
                         wsClientConnection.disconnect();
-                        System.err.println(System.currentTimeMillis() + " ** connecting...  try:" + reconnectCount + " ++");
+                        log.info("** connecting...  try:" + wsReconnectCount + " ++");
                         // then connect again
                         connect(wsCallback, wsEventsUrl, wsEventsParamQuery);
                     } catch (RestException e) {
                         wsCallback.onFailure(e);
                     }
                 }
-            }, reconnectCount >= timeouts.length ? timeouts[timeouts.length - 1] : timeouts[reconnectCount], TimeUnit.SECONDS);
+            }, wsReconnectCount >= timeouts.length ? timeouts[timeouts.length - 1] : timeouts[wsReconnectCount], TimeUnit.SECONDS);
         }
+    }
+    
+    public void setMaxWsReconnectCount(int count)
+    {
+    	this.maxWsReconnectCount = count;
+    }
+    
+    public boolean isWsConnected()
+    {
+    	if (wsChannelFuture != null && wsChannelFuture.channel() != null && wsChannelFuture.channel().isOpen() && wsChannelFuture.channel().isWritable())
+    		return true;
+    	
+    	return false;
     }
 }

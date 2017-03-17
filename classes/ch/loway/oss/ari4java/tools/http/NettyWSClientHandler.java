@@ -54,10 +54,13 @@ public class NettyWSClientHandler extends NettyHttpClientHandler {
     @Override
     public void channelInactive(ChannelHandlerContext ctx) throws Exception {
         if (!shuttingDown) {
+        	//System.out.println("Channel inactive");
+        	wsCallback.onDisconnect();
+        	
             if (this.wsClient != null) {
                 wsClient.reconnectWs();
             } else {
-                wsCallback.onDisconnect();
+                //wsCallback.onDisconnect();
             }
         }
     }
@@ -91,10 +94,13 @@ public class NettyWSClientHandler extends NettyHttpClientHandler {
         } else if (frame instanceof CloseWebSocketFrame) {
             ch.close();
             if (!shuttingDown) {
+            	//System.out.println("CloseWebSocket received");
+            	wsCallback.onDisconnect();
+            	
                 if (this.wsClient != null) {
                     wsClient.reconnectWs();
                 } else {
-                    wsCallback.onDisconnect();
+                    //wsCallback.onDisconnect();
                 }
             }
         }

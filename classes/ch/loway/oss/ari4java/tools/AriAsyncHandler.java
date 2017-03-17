@@ -55,9 +55,20 @@ public class AriAsyncHandler<T> implements HttpResponseHandler {
     }
 
     @Override
+    public void onConnect() {
+        this.callback.onConnect();
+    }
+
+    @Override
     public void onDisconnect() {
         // this is from channelInactive on the websocket raise an error so the client can reconnect if need be
-        this.callback.onFailure(new RestException("Asterisk WS is disconnected. Please retry."));
+        //this.callback.onFailure(new RestException("Asterisk WS is disconnected. Please retry."));
+        this.callback.onDisconnect();
+    }
+
+    @Override
+    public void onReconnectStopped() {
+        this.callback.onReconnectStopped();
     }
 
     @Override
@@ -76,6 +87,3 @@ public class AriAsyncHandler<T> implements HttpResponseHandler {
     }
 
 }
-
-// $Log$
-//

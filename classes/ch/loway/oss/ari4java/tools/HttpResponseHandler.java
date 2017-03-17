@@ -8,7 +8,7 @@ package ch.loway.oss.ari4java.tools;
 public interface HttpResponseHandler {
 
     /**
-     * Client started rending response.
+     * Client started sending response.
      */
     void onChReadyToWrite();
 
@@ -18,9 +18,19 @@ public interface HttpResponseHandler {
     void onResponseReceived();
 
     /**
+     * WebSocket connected
+     */
+    void onConnect();
+    
+    /**
      * WebSocket disconnected
      */
     void onDisconnect();
+    
+    /**
+     * WebSocket reconnect stopped
+     */
+    void onReconnectStopped();
 
     /**
      * All went well.

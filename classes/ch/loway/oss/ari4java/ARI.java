@@ -59,9 +59,8 @@ public class ARI {
     public void setWsClient(WsClient wsClient) {
         this.wsClient = wsClient;
     }
-
     
-    public void setVersion(AriVersion version) throws ARIException {
+    public void setVersion(AriVersion version) {
         this.version = version;
     }
     
@@ -423,6 +422,21 @@ public class ARI {
         final MessageQueue q = new MessageQueue();
 
         events().eventWebsocket( appName, new AriCallback<Message>() {
+
+        	@Override
+			public void onConnect()
+			{
+			}
+
+			@Override
+			public void onDisconnect()
+			{
+			}
+
+			@Override
+			public void onReconnectStopped()
+			{
+			}
 
             @Override
             public void onSuccess(Message result) {                

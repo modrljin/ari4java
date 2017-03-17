@@ -9,6 +9,9 @@ package ch.loway.oss.ari4java.tools;
  * The type of result returned in callback
  */
 public interface AriCallback<T> {
+	void onConnect();
+	void onDisconnect();
+	void onReconnectStopped();
     void onSuccess(T result);
     void onFailure(RestException e);
 }
