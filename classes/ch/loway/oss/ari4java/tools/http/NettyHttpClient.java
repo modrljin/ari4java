@@ -420,7 +420,13 @@ public class NettyHttpClient implements HttpClient, WsClient, WsClientAutoReconn
                 public void run() {
                     try {
                         // 1st close up
-                        wsClientConnection.disconnect();
+                    	if (wsClientConnection != null) {
+                            try {
+                                wsClientConnection.disconnect();
+                            } catch (RestException e) {
+                            	// ignoring exception
+                            }
+                        }
                         log.info("** connecting...  try:" + wsReconnectCount + " ++");
                         // then connect again
                         connect(wsCallback, wsEventsUrl, wsEventsParamQuery);
@@ -428,7 +434,7 @@ public class NettyHttpClient implements HttpClient, WsClient, WsClientAutoReconn
                         wsCallback.onFailure(e);
                     }
                 }
-            }, wsReconnectCount >= timeouts.length ? timeouts[timeouts.length - 1] : timeouts[wsReconnectCount], TimeUnit.SECONDS);
+            }, wsReconnectCount >= timeouts.length ? timeouts[timeouts.length - 1] : timeouts[wsReconnectCount - 1], TimeUnit.SECONDS);
         }
     }
     
