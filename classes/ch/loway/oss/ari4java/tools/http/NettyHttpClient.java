@@ -445,9 +445,11 @@ public class NettyHttpClient implements HttpClient, WsClient, WsClientAutoReconn
     
     public boolean isWsConnected()
     {
-    	if (wsChannelFuture != null && wsChannelFuture.channel() != null && wsChannelFuture.channel().isOpen() && wsChannelFuture.channel().isWritable())
-    		return true;
+    	if (wsClientConnection == null)
+    		return false;
+    	else if (wsChannelFuture == null || wsChannelFuture.isCancelled() || wsChannelFuture.channel() == null)
+    		return false;
     	
-    	return false;
+    	return wsChannelFuture.channel().isActive();
     }
 }
