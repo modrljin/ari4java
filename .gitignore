@@ -1,15 +1,15 @@
 *.class
 
 # Package Files #
-*.jar
+# *.jar
 *.war
 *.ear
 
-ari4java/*
+# ari4java/*
 build/*
-dist/*
-nbproject/*
-libs/*
+# dist/*
+# nbproject/*
+# libs/*
 
 manifest.mf
 build.xml
@@ -18,8 +18,7 @@ build.xml
 /.classpath
 /.project
 /.gradle
-/.nb-gradle
+# /.nb-gradle
 
 # macbook
 .DS_Store
-
