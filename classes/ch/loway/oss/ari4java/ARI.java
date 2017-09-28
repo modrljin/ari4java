@@ -72,10 +72,8 @@ public class ARI {
      * Returns the current ARI version.
      * 
      * @return the ARI version currently used.
-     * @throws ARIException 
      */
-    
-    public AriVersion getVersion() throws ARIException {
+    public AriVersion getVersion() {
         return version;
     }
     

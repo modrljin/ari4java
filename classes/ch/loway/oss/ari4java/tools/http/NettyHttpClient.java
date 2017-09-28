@@ -1,5 +1,23 @@
 package ch.loway.oss.ari4java.tools.http;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
+import java.util.Iterator;
+import java.util.List;
+import java.util.concurrent.TimeUnit;
+
+import org.apache.log4j.Logger;
+
+import ch.loway.oss.ari4java.tools.HttpClient;
+import ch.loway.oss.ari4java.tools.HttpParam;
+import ch.loway.oss.ari4java.tools.HttpResponse;
+import ch.loway.oss.ari4java.tools.HttpResponseHandler;
+import ch.loway.oss.ari4java.tools.RestException;
+import ch.loway.oss.ari4java.tools.WsClient;
+import ch.loway.oss.ari4java.tools.WsClientAutoReconnect;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
@@ -27,26 +45,9 @@ import io.netty.handler.codec.http.websocketx.WebSocketClientHandshaker;
 import io.netty.handler.codec.http.websocketx.WebSocketClientHandshakerFactory;
 import io.netty.handler.codec.http.websocketx.WebSocketFrame;
 import io.netty.handler.codec.http.websocketx.WebSocketVersion;
+import io.netty.util.concurrent.Future;
+import io.netty.util.concurrent.GenericFutureListener;
 import io.netty.util.concurrent.ScheduledFuture;
-
-import java.io.UnsupportedEncodingException;
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.net.URLEncoder;
-import java.nio.charset.StandardCharsets;
-import java.util.Iterator;
-import java.util.List;
-import java.util.concurrent.TimeUnit;
-
-import org.apache.log4j.Logger;
-
-import ch.loway.oss.ari4java.tools.HttpClient;
-import ch.loway.oss.ari4java.tools.HttpParam;
-import ch.loway.oss.ari4java.tools.HttpResponse;
-import ch.loway.oss.ari4java.tools.HttpResponseHandler;
-import ch.loway.oss.ari4java.tools.RestException;
-import ch.loway.oss.ari4java.tools.WsClient;
-import ch.loway.oss.ari4java.tools.WsClientAutoReconnect;
 
 /**
  * HTTP and WebSocket client implementation based on netty.io.
@@ -125,7 +126,13 @@ public class NettyHttpClient implements HttpClient, WsClient, WsClientAutoReconn
                     }
                 }
                 if (group != null && !group.isShuttingDown()) {
-                    group.shutdownGracefully(5, 10, TimeUnit.SECONDS).syncUninterruptibly();
+                    group.shutdownGracefully(5, 10, TimeUnit.SECONDS).addListener(new GenericFutureListener() {
+                        @Override
+                        public void operationComplete(Future future) throws Exception {
+                            shutDownGroup.shutdownGracefully(5, 10, TimeUnit.SECONDS);
+                            shutDownGroup = null;
+                        }
+                    }).syncUninterruptibly();
                     group = null;
                 }
             }
