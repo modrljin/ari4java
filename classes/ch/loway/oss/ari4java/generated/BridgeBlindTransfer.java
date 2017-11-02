@@ -3,7 +3,7 @@ package ch.loway.oss.ari4java.generated;
 // ----------------------------------------------------
 //      THIS CLASS WAS GENERATED AUTOMATICALLY         
 //               PLEASE DO NOT EDIT                    
-//    Generated on: Thu Jan 05 17:19:53 CET 2017
+//    Generated on: Tue Oct 31 10:30:41 CET 2017
 // ----------------------------------------------------
 
 import java.util.Date;

@@ -29,6 +29,7 @@ public class GenCodeAri4Java {
         loadAsteriskDefs( dm, "ari_1_8_0" );
         loadAsteriskDefs( dm, "ari_1_9_0" );
         loadAsteriskDefs( dm, "ari_2_0_0" );
+        loadAsteriskDefs( dm, "ari_3_0_0" );
         
         dm.generateAllClasses();
         
