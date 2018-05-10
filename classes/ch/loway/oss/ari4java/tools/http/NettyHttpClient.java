@@ -33,7 +33,8 @@ import io.netty.channel.socket.nio.NioSocketChannel;
 import io.netty.handler.codec.http.DefaultFullHttpRequest;
 import io.netty.handler.codec.http.FullHttpRequest;
 import io.netty.handler.codec.http.HttpClientCodec;
-import io.netty.handler.codec.http.HttpHeaders;
+import io.netty.handler.codec.http.HttpHeaderNames;
+import io.netty.handler.codec.http.HttpHeaderValues;
 import io.netty.handler.codec.http.HttpMethod;
 import io.netty.handler.codec.http.HttpObjectAggregator;
 import io.netty.handler.codec.http.HttpRequest;
@@ -139,9 +140,13 @@ public class NettyHttpClient implements HttpClient, WsClient, WsClientAutoReconn
         }, 250L, TimeUnit.MILLISECONDS);
     }
 
-    private String buildURL(String path, List<HttpParam> parametersQuery) throws UnsupportedEncodingException {
+    private String buildURL(String path, List<HttpParam> parametersQuery, boolean withAddress) throws UnsupportedEncodingException {
         StringBuilder uriBuilder = new StringBuilder();
-        uriBuilder.append(baseUri.getPath());
+        if (withAddress) {
+            uriBuilder.append(baseUri);
+        } else {
+            uriBuilder.append(baseUri.getPath());
+        }
         uriBuilder.append("ari");
         uriBuilder.append(path);
         uriBuilder.append("?api_key=");
@@ -163,9 +168,13 @@ public class NettyHttpClient implements HttpClient, WsClient, WsClientAutoReconn
 
     // Factory for WS handshakes
     private WebSocketClientHandshaker getWsHandshake(String path, List<HttpParam> parametersQuery) throws UnsupportedEncodingException {
-        String url = buildURL(path, parametersQuery);
+        String url = buildURL(path, parametersQuery, true);
         try {
-            URI uri = new URI(url.replaceFirst("http", "ws"));
+            if (url.regionMatches(true, 0, "http", 0, 4)) {
+                // http(s):// -> ws(s)://
+                url = "ws" + url.substring(4);
+            }
+            URI uri = new URI(url);
             return WebSocketClientHandshakerFactory.newHandshaker(
                     uri, WebSocketVersion.V13, null, false, null);
         } catch (URISyntaxException e) {
@@ -176,7 +185,7 @@ public class NettyHttpClient implements HttpClient, WsClient, WsClientAutoReconn
 
     // Build the HTTP request based on the given parameters
     private HttpRequest buildRequest(String path, String method, List<HttpParam> parametersQuery, List<HttpParam> parametersForm, List<HttpParam> parametersBody) throws UnsupportedEncodingException {
-        String url = buildURL(path, parametersQuery);
+        String url = buildURL(path, parametersQuery, false);
         FullHttpRequest request = new DefaultFullHttpRequest(
                 HttpVersion.HTTP_1_1, HttpMethod.valueOf(method), url);
         //System.out.println(request.getUri());
@@ -184,12 +193,12 @@ public class NettyHttpClient implements HttpClient, WsClient, WsClientAutoReconn
             String vars = makeBodyVariables(parametersBody);
             ByteBuf bbuf = Unpooled.copiedBuffer(vars, StandardCharsets.UTF_8);
 
-            request.headers().add(HttpHeaders.Names.CONTENT_TYPE, "application/json");
-            request.headers().set(HttpHeaders.Names.CONTENT_LENGTH, bbuf.readableBytes());
+            request.headers().add(HttpHeaderNames.CONTENT_TYPE, "application/json");
+            request.headers().set(HttpHeaderNames.CONTENT_LENGTH, bbuf.readableBytes());
             request.content().clear().writeBytes(bbuf);
         }
-        request.headers().set(HttpHeaders.Names.HOST, "localhost");
-        request.headers().set(HttpHeaders.Names.CONNECTION, HttpHeaders.Values.CLOSE);
+        request.headers().set(HttpHeaderNames.HOST, "localhost");
+        request.headers().set(HttpHeaderNames.CONNECTION, HttpHeaderValues.CLOSE);
         return request;
     }
 
@@ -328,17 +337,21 @@ public class NettyHttpClient implements HttpClient, WsClient, WsClientAutoReconn
             @Override
             public void operationComplete(ChannelFuture future) throws Exception {
                 if (future.isSuccess()) {
-                    callback.onChReadyToWrite();
-                    callback.onConnect();
-                    // reset the reconnect counter on successful connect
-                    wsReconnectCount = 0;
+                    wsHandler.handshakeFuture().addListener(new ChannelFutureListener() {
+                        @Override
+                        public void operationComplete(ChannelFuture future) throws Exception {
+                            if (future.isSuccess()) {
+                                callback.onChReadyToWrite();
+                                callback.onConnect();
+                                // reset the reconnect counter on successful connect
+                                wsReconnectCount = 0;
+                            } else {
+                            	reconnectWs(future.cause());
+                            }
+                        }
+                    });
                 } else {
-                    if (maxWsReconnectCount > -1 && wsReconnectCount >= maxWsReconnectCount) {
-                        callback.onFailure(future.cause());
-                        callback.onReconnectStopped();
-                    } else {
-                        reconnectWs();
-                    }
+                	reconnectWs(future.cause());
                 }
             }
         };
@@ -411,16 +424,23 @@ public class NettyHttpClient implements HttpClient, WsClient, WsClientAutoReconn
 
 
     @Override
-    public void reconnectWs() {
+    public void reconnectWs(Throwable cause) {
         // cancel the ping timer
         if (wsPingTimer != null) {
             wsPingTimer.cancel(false);
             wsPingTimer = null;
         }
+        
+        if (maxWsReconnectCount > -1 && wsReconnectCount >= maxWsReconnectCount) {
+            wsCallback.onFailure(cause);
+            wsCallback.onReconnectStopped();
+        }
+        
         // if not shutdown reconnect, note the check not on the shutDownGroup
         if (!group.isShuttingDown()) {
             // schedule reconnect after a 2,5,10 seconds
             long[] timeouts = {2L, 5L, 10L};
+            long timeout = wsReconnectCount >= timeouts.length ? timeouts[timeouts.length - 1] : timeouts[wsReconnectCount];
             wsReconnectCount++;
             shutDownGroup.schedule(new Runnable() {
                 @Override
@@ -441,7 +461,7 @@ public class NettyHttpClient implements HttpClient, WsClient, WsClientAutoReconn
                         wsCallback.onFailure(e);
                     }
                 }
-            }, wsReconnectCount >= timeouts.length ? timeouts[timeouts.length - 1] : timeouts[wsReconnectCount - 1], TimeUnit.SECONDS);
+            }, timeout, TimeUnit.SECONDS);
         }
     }
     

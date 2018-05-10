@@ -58,7 +58,7 @@ public class NettyWSClientHandler extends NettyHttpClientHandler {
         	wsCallback.onDisconnect();
         	
             if (this.wsClient != null) {
-                wsClient.reconnectWs();
+                wsClient.reconnectWs(null);
             } else {
                 //wsCallback.onDisconnect();
             }
@@ -72,13 +72,13 @@ public class NettyWSClientHandler extends NettyHttpClientHandler {
         if (!handshaker.isHandshakeComplete()) {
             handshaker.finishHandshake(ch, (FullHttpResponse) msg);
             handshakeFuture.setSuccess();
-            wsCallback.onChReadyToWrite();
+            //wsCallback.onChReadyToWrite();
             return;
         }
         
         if (msg instanceof FullHttpResponse) {
             FullHttpResponse response = (FullHttpResponse) msg;
-            String error = "Unexpected FullHttpResponse (getStatus=" + response.getStatus() + ", content=" + response.content().toString(CharsetUtil.UTF_8) + ')';
+            String error = "Unexpected FullHttpResponse (getStatus=" + response.status() + ", content=" + response.content().toString(CharsetUtil.UTF_8) + ')';
             System.err.println(error);
             throw new Exception(error);
         }
@@ -98,7 +98,7 @@ public class NettyWSClientHandler extends NettyHttpClientHandler {
             	wsCallback.onDisconnect();
             	
                 if (this.wsClient != null) {
-                    wsClient.reconnectWs();
+                    wsClient.reconnectWs(null);
                 } else {
                     //wsCallback.onDisconnect();
                 }
