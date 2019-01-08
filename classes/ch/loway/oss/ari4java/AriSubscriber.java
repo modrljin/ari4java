@@ -19,7 +19,6 @@ public class AriSubscriber {
     List<String> subscriptions = new ArrayList<String>();
     
     public Application subscribe( ARI ari, EventSource m ) throws RestException {
-        
         String model = toModelName(m);
         Application a = ari.applications().subscribe( ari.getAppName(), model );
         subscriptions.add(model);
@@ -51,8 +50,6 @@ public class AriSubscriber {
      * @param m
      * @return a string representation, e.g. "channel:1234"
      */
-    
-    
     public String toModelName( EventSource m ) {
         
         if ( m instanceof Bridge ) {
@@ -70,13 +67,8 @@ public class AriSubscriber {
         if ( m instanceof DeviceState ) {
             DeviceState b = (DeviceState) m;
             return "deviceState:" + b.getName();
-        } else
-                
-        {
+        } else {
             throw new IllegalArgumentException("Cannot subscribe model " + m.getClass().getName() );
         }
-        
-        
     }
-    
 }

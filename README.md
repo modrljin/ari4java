@@ -8,7 +8,7 @@ The Asterisk REST Interface (ARI) bindings for Java.
 Description
 -----------
 
-ARI is an interface available on Asterisk 12/13 that lets you write applications
+ARI is an interface available on Asterisk 12/13/14/15 that lets you write applications
 that run externally and control call flow through REST calls while receiving
 events on a websocket.
 
@@ -33,13 +33,13 @@ If you use Gradle (or any tool using Maven dependencies) you can simply declare 
 
 
 	repositories {
-		mavenCentral()
-	    mavenRepo(url: 'http://jcenter.bintray.com') 
+        mavenCentral()
+        jcenter()
 	}
 
 
 	dependencies {
-	    compile 'ch.loway.oss.ari4java:ari4java:0.4.2'
+	    compile 'ch.loway.oss.ari4java:ari4java:0.4.5'
 	}
 
 This will download the package and all required dependencies.
@@ -55,19 +55,11 @@ generated classes are under "ch.loway.oss.ari4vaja.generated". They should not b
 * "codegen/" contains the Java code that creates auto-generated classes.
 * "codegen-data/" contains Swagger models from different versions of the interface (copied from Asterisk).
 
-Creating Java code out of Swagger definitions
----------------------------------------------
-
-In order to run codegen (class ch.loway.oss.ari4java.codegen.run), you need the following libraries:
-
-- jackson-core-2.2.2
-- jackson-databind-2.2.2
-- jackson-annotations-2.2.2
 
 Testing and packaging
 ---------------------
 
-The easiest tway to build is simply using the Gradle script supplied.
+The easiest way to build is simply using the Gradle script supplied.
 
 		gradle clean build
 
@@ -79,14 +71,17 @@ Running
 
 The project requires:
 
-- jackson-core-2.2.2
-- jackson-databind-2.2.2
-- jackson-annotations-2.2.2
+- jackson-core-2.9.6
+- jackson-databind-2.9.6
+- jackson-annotations-2.9.6
 - netty-all-4.0.25-Final
 
 Status
 ------
 
+* 19.01.07 - Support java 9 (#108), code generation from gradle(#110), fixed unsubscribing from application correctly(#59), added event interface inheritance(#106) rel 0.5.0
+* 17.12.19 - Added support for ARI 3.0.0 (#78)
+* 17.02.04 - Added support for ARI 2.0.0 (#62) and quicker deserialization (#63)
 * 16.11.30 - Fixes on Graham's AutoReconnect patch - #60 - rel 0.4.3 
 * 16.10.21 - Fixing #55 and #57 - rel 0.4.2
 * 16.10.17 - Graham's AutoReconnect patch #52 - rel 0.4.1

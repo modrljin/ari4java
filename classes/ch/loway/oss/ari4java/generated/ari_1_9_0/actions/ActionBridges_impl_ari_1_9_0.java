@@ -3,9 +3,10 @@ package ch.loway.oss.ari4java.generated.ari_1_9_0.actions;
 // ----------------------------------------------------
 //      THIS CLASS WAS GENERATED AUTOMATICALLY         
 //               PLEASE DO NOT EDIT                    
-//    Generated on: Tue Oct 31 10:30:41 CET 2017
+//    Generated on: Tue Jan 08 13:25:08 CET 2019
 // ----------------------------------------------------
 
+import ch.loway.oss.ari4java.generated.Module;
 import ch.loway.oss.ari4java.generated.*;
 import java.util.Date;
 import java.util.List;

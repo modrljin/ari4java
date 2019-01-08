@@ -10,7 +10,7 @@ import ch.loway.oss.ari4java.codegen.DefMapper;
  */
 public class GenCodeAri4Java {
 
-	public static String PROJECT = "D:/Projects/_GitHub/ari4java-MOdrljin";
+	public static String PROJECT = ".";
     
     public static String SOURCES = PROJECT + "/codegen-data/";
 
@@ -21,15 +21,15 @@ public class GenCodeAri4Java {
         DefMapper dm = new DefMapper();
         dm.setProjectFolder(PROJECT);
 
-        loadAsteriskDefs( dm, "ari_0_0_1" );
-        loadAsteriskDefs( dm, "ari_1_0_0" );
-        loadAsteriskDefs( dm, "ari_1_5_0" );
-        loadAsteriskDefs( dm, "ari_1_6_0" );
-        loadAsteriskDefs( dm, "ari_1_7_0" );
-        loadAsteriskDefs( dm, "ari_1_8_0" );
-        loadAsteriskDefs( dm, "ari_1_9_0" );
-        loadAsteriskDefs( dm, "ari_2_0_0" );
-        loadAsteriskDefs( dm, "ari_3_0_0" );
+        loadAsteriskDefs(dm, "ari_0_0_1");
+        loadAsteriskDefs(dm, "ari_1_0_0");
+        loadAsteriskDefs(dm, "ari_1_5_0");
+        loadAsteriskDefs(dm, "ari_1_6_0");
+        loadAsteriskDefs(dm, "ari_1_7_0");
+        loadAsteriskDefs(dm, "ari_1_8_0");
+        loadAsteriskDefs(dm, "ari_1_9_0");
+        loadAsteriskDefs(dm, "ari_2_0_0");
+        loadAsteriskDefs(dm, "ari_3_0_0");
         
         dm.generateAllClasses();
         
@@ -40,16 +40,16 @@ public class GenCodeAri4Java {
 
         String srcDir = SOURCES + srcVer + "/";
 
-        dm.clean( srcVer );
-        dm.parseJsonDefinition( new File(srcDir + "applications.json"), srcVer, false );
-        dm.parseJsonDefinition( new File(srcDir + "asterisk.json"), srcVer, false );
-        dm.parseJsonDefinition( new File(srcDir + "bridges.json"), srcVer, false );
-        dm.parseJsonDefinition( new File(srcDir + "channels.json"), srcVer, false );
-        dm.parseJsonDefinition( new File(srcDir + "endpoints.json"), srcVer, false );
-        dm.parseJsonDefinition( new File(srcDir + "playbacks.json"), srcVer, false );
-        dm.parseJsonDefinition( new File(srcDir + "recordings.json"), srcVer, false );
-        dm.parseJsonDefinition( new File(srcDir + "sounds.json"), srcVer, false );
-        dm.parseJsonDefinition( new File(srcDir + "deviceStates.json"), srcVer, false );
-        dm.parseJsonDefinition( new File(srcDir + "events.json"), srcVer, true );
+        dm.clean(srcVer);
+        dm.parseJsonDefinition(new File(srcDir + "applications.json"), srcVer, false);
+        dm.parseJsonDefinition(new File(srcDir + "asterisk.json"), srcVer, false);
+        dm.parseJsonDefinition(new File(srcDir + "bridges.json"), srcVer, false);
+        dm.parseJsonDefinition(new File(srcDir + "channels.json"), srcVer, false);
+        dm.parseJsonDefinition(new File(srcDir + "endpoints.json"), srcVer, false);
+        dm.parseJsonDefinition(new File(srcDir + "playbacks.json"), srcVer, false);
+        dm.parseJsonDefinition(new File(srcDir + "recordings.json"), srcVer, false);
+        dm.parseJsonDefinition(new File(srcDir + "sounds.json"), srcVer, false);
+        dm.parseJsonDefinition(new File(srcDir + "deviceStates.json"), srcVer, false);
+        dm.parseJsonDefinition(new File(srcDir + "events.json"), srcVer, true);
     }
 }

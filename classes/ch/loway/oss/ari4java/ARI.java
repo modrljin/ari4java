@@ -35,6 +35,8 @@ import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.apache.log4j.Logger;
+
 /**
  * ARI factory and helper class
  * 
@@ -43,8 +45,10 @@ import java.util.regex.Pattern;
  */
 public class ARI {
 
+	private Logger log = Logger.getLogger(ARI.class);
+	
     private final static String ALLOWED_IN_UID = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-        
+    
     private String appName = "";
     private String url = "";
     private AriVersion version;
@@ -53,7 +57,7 @@ public class ARI {
     private ActionEvents liveActionEvent = null;
     private AriSubscriber subscriptions = new AriSubscriber();
     private final CopyOnWriteArrayList<BaseAriAction> liveActionList = new CopyOnWriteArrayList<>();
-
+    
     public void setHttpClient(HttpClient httpClient) {
         this.httpClient = httpClient;
     }
@@ -121,7 +125,6 @@ public class ARI {
     public <T> T getModelImpl(Class<T> klazz) throws ARIException {
         return (T) buildConcreteImplementation(klazz);
     }
-
     
     /**
      * Builds a concrete instance given an interface.
@@ -130,7 +133,6 @@ public class ARI {
      * @return the concrete implementation for that interface under the ARI in use.
      * @throws ARIException 
      */
-        
     private Object buildConcreteImplementation(Class<?> klazz) throws ARIException {
 
         if (version == null) {
@@ -158,8 +160,6 @@ public class ARI {
         );
     }
 
-    
-    
     /**
      * Close an action object that is open for WebSocket interaction
      * 
@@ -194,7 +194,6 @@ public class ARI {
      * @return a connection object
      * @throws ARIException If the url is invalid, or the version of ARI is not supported.
      */
-
     public static ARI build(String url, String app, String user, String pass, AriVersion version) throws ARIException {
 
         if (version == AriVersion.IM_FEELING_LUCKY) {
@@ -228,7 +227,6 @@ public class ARI {
      * 
      * @param s 
      */
-    
     public void setAppName( String s ) {
         this.appName = s;
     }
@@ -238,7 +236,6 @@ public class ARI {
      * 
      * @return the appName
      */
-    
     public String getAppName() {
         return this.appName;
     }
@@ -254,13 +251,12 @@ public class ARI {
      * @return the version of your server
      * @throws ARIException if the version is not supported
      */
-
     protected static AriVersion detectAriVersion( String url, String user, String pass ) throws ARIException {
         
         String response = doHttpGet( url + "ari/api-docs/resources.json", user, pass );
         String version = findVersionString( response );
+        
         return AriVersion.fromVersionString(version);
-
     }
 
     /**
@@ -274,7 +270,6 @@ public class ARI {
      * @return The body of the HTTP request.
      * @throws ARIException
      */
-
     private static String doHttpGet(String urlWithParms, String user, String pwd) throws ARIException {
         URL url = null;
         final String UTF8 = "UTF-8";
@@ -304,8 +299,6 @@ public class ARI {
             } catch (IOException e) {
                 throw new ARIException("Cannot connect: " + e.getMessage());
             }
-
-
 
             BufferedReader buffReader = new BufferedReader(new InputStreamReader(is, UTF8));
 
@@ -344,7 +337,6 @@ public class ARI {
      * @return a String describing the version reported from Asterisk.
      * @throws ARIException
      */
-
     private static String findVersionString(String response) throws ARIException {
         Pattern p = Pattern.compile(".apiVersion.:\\s*\"(.+?)\"", Pattern.MULTILINE + Pattern.CASE_INSENSITIVE );
 
@@ -356,7 +348,6 @@ public class ARI {
         }
     }
 
-
     /**
      * This operation is the opposite of a build() - to be called in the final
      * clause where the ARI object is built.
@@ -364,25 +355,64 @@ public class ARI {
      * In any case, it is good practice to have a way to deallocate stuff like
      * the websocket or any circular reference.
      */
-
-    public void cleanup() throws ARIException {
-
-        for (BaseAriAction liveAction : liveActionList) {
+    public void cleanup() throws ARIException
+    {
+    	log.info("Cleanup...");
+    	
+    	try
+    	{
+    		unsubscribeApplication();
+    	}
+    	catch (ARIException e)
+    	{
+    		// do nothing
+    	}
+    	
+        for (BaseAriAction liveAction : liveActionList)
+        {
             try {
+            	//log.info("Closing liveAction: " + liveAction);
                 closeAction(liveAction);
             } catch (ARIException e) {
                 // ignore on cleanup...
             }
         }
-
-        destroy( wsClient );
-        if (wsClient != httpClient) {
+        
+        destroy(wsClient);
+        
+        if (wsClient != httpClient)
             destroy(httpClient);
-        }
-
+        
         wsClient = null;
         httpClient = null;
     }
+    
+    /**
+     * Unsubscribe from all resources of the stasis application 
+     * @throws RestException
+     */
+    private void unsubscribeApplication() throws RestException {
+    	Application application = applications().get(appName);
+    	
+    	// unsubscribe from all channels
+    	for(int i = 0; i<application.getChannel_ids().size(); i++) {
+    		//log.info("Unsubscribe app '" + appName + "' from channel '" + application.getChannel_ids().get(i) + "'");
+			applications().unsubscribe(appName, "channel:"+application.getChannel_ids().get(i));
+    	}    		
+    	// unsubscribe from all bridges
+    	for(int i = 0; i<application.getBridge_ids().size(); i++) {
+    		//log.info("Unsubscribe app '" + appName + "' from bridges '" + application.getBridge_ids().get(i) + "'");
+			applications().unsubscribe(appName, "bridge:"+application.getBridge_ids().get(i));
+    	}
+    	// unsubscribe from all endpoints
+    	for(int i = 0; i<application.getEndpoint_ids().size(); i++) {
+			applications().unsubscribe(appName, "endpoint:"+application.getEndpoint_ids().get(i));
+    	}
+    	// unsubscribe from all deviceState
+    	for(int i = 0; i<application.getDevice_names().size(); i++) {
+			applications().unsubscribe(appName, "deviceState:"+application.getDevice_names().get(i));
+    	}
+	}
 
     /**
      * Does the destruction of a client. In a sense, it is a reverse factory.
@@ -390,7 +420,6 @@ public class ARI {
      * @param client the client object
      * @throws IllegalArgumentException All clients should be of a known type. Let's play it safe.
      */
-
     private void destroy( Object client ) {
         if ( client != null ) {
             if ( client instanceof NettyHttpClient ) {
@@ -411,8 +440,6 @@ public class ARI {
      * @return The MQ connected to your websocket.
      * @throws ARIException
      */
-
-
     public MessageQueue getWebsocketQueue() throws ARIException {
 
         if ( liveActionEvent != null ) {
@@ -450,10 +477,7 @@ public class ARI {
         });
 
         return q;
-
     }
-
-
 
     /**
      * Gets us a ready to use object.
@@ -546,8 +570,6 @@ public class ARI {
         return (ActionSounds) setupAction(version.builder().actionSounds());
     }
 
-
-
     /**
      * This code REALLY smells bad.
      * Most likely we should either implement an interface, or push the clients
@@ -561,7 +583,6 @@ public class ARI {
      * @return  an Action object on which we'll set the default clients.
      * @throws IllegalArgumentException
      */
-
     public Object setupAction(Object a) throws IllegalArgumentException {
         if (a instanceof BaseAriAction) {
             BaseAriAction action = (BaseAriAction) a;
@@ -579,7 +600,6 @@ public class ARI {
      * 
      * @param ms how long is it going to sleep.
      */
-
     public static void sleep( long ms ) {
         try {
             Thread.sleep(ms);
@@ -605,8 +625,8 @@ public class ARI {
             int pos = (int) (Math.random() * ALLOWED_IN_UID.length());
             sb.append(ALLOWED_IN_UID.charAt(pos));
         }
+        
         return sb.toString();
-
     }
     
     /**
@@ -616,7 +636,6 @@ public class ARI {
      * @return the Application object 
      * @throws RestException 
      */
-    
     public Application subscribe( EventSource m ) throws RestException {
         return subscriptions.subscribe(this, m);
     }
@@ -626,10 +645,8 @@ public class ARI {
      * @param m
      * @throws RestException 
      */
-    
     public void unsubscribe( EventSource m ) throws RestException {
         subscriptions.unsubscribe(this, m);
-        
     }
     
     /**
@@ -637,13 +654,9 @@ public class ARI {
      * 
      * @throws RestException 
      */
-    
     public void unsubscribeAll() throws RestException {
         subscriptions.unsubscribeAll(this);
     }
-    
-    
-    
     
     /**
      * This interface is used to go from an interface to its concrete 
@@ -652,6 +665,4 @@ public class ARI {
     public static interface ClassFactory {
         public Class<?> getImplementationFor( Class<?> interfaceClass );
     }
-    
 }
-

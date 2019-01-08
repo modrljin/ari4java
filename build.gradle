@@ -9,16 +9,14 @@ def env = System.getenv()
 
 project.ext {
   webapp_name    = 'ari4java'
-  app_version    = '0.4.3'
+  app_version    = '0.5.0'
   build_number   = env["BUILD_NUMBER"]  
   version_class  = 'ch/loway/oss/ari4java/BUILD.java'
   build_time     = "" + new Date()
 }
 
-
-
 sourceSets {
-		
+
 	main {
 		java {
 			srcDirs "$buildDir/classes_subst"
@@ -101,13 +99,24 @@ repositories {
 
 
 dependencies {
-	compile 'com.fasterxml.jackson.core:jackson-core:2.2.2'
-	compile 'com.fasterxml.jackson.core:jackson-databind:2.2.2'
-	compile 'com.fasterxml.jackson.core:jackson-annotations:2.2.2'
+	compile 'ari4java:codegen'
+
+	compile 'com.fasterxml.jackson.core:jackson-core:2.9.6'
+	compile 'com.fasterxml.jackson.core:jackson-databind:2.9.6'
+	compile 'com.fasterxml.jackson.core:jackson-annotations:2.9.6'
 	compile 'io.netty:netty-all:4.0.25.Final'
+	compile 'javax.xml.bind:jaxb-api:2.1'
 
 	testCompile 'junit:junit:4.10'
+}
 
+task buildCodegen {
+    dependsOn gradle.includedBuild('codegen').task(':build')
+}
+
+task runCodegen(type:JavaExec) {
+	main = 'ch.loway.oss.ari4java.codegen.run'
+	classpath sourceSets.main.compileClasspath
 }
 
 task setVersionInSources() {
@@ -134,6 +143,9 @@ task setVersionInSources() {
     	           )  	  	
 	}
 }
+
+runCodegen.dependsOn buildCodegen
+setVersionInSources.dependsOn runCodegen
 compileJava.dependsOn setVersionInSources
 
 // decide what to see -only one can be enabled

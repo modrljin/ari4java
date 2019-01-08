@@ -59,13 +59,12 @@ import io.netty.util.concurrent.ScheduledFuture;
  * Requires netty-all-4.0.12.Final.jar
  * 
  * @author mwalton
- *
  */
 public class NettyHttpClient implements HttpClient, WsClient, WsClientAutoReconnect {
 
 	private Logger log = Logger.getLogger(NettyHttpClient.class);
 	
-    public static final int MAX_HTTP_REQUEST_KB = 256;
+    public static final int MAX_HTTP_REQUEST_KB = 16 * 1024;
     
     private Bootstrap bootStrap;
     private URI baseUri;
@@ -108,7 +107,7 @@ public class NettyHttpClient implements HttpClient, WsClient, WsClientAutoReconn
             public void initChannel(SocketChannel ch) throws Exception {
                 ChannelPipeline pipeline = ch.pipeline();
                 pipeline.addLast("http-codec", new HttpClientCodec());
-                pipeline.addLast("aggregator", new HttpObjectAggregator( MAX_HTTP_REQUEST_KB * 1024));
+                pipeline.addLast("aggregator", new HttpObjectAggregator(MAX_HTTP_REQUEST_KB * 1024));
                 pipeline.addLast("http-handler", new NettyHttpClientHandler());
             }
         });
@@ -302,8 +301,8 @@ public class NettyHttpClient implements HttpClient, WsClient, WsClientAutoReconn
             throw new RestException(e);
         }
     }
-    // WsClient implementation - connect to WebSocket server
 
+    // WsClient implementation - connect to WebSocket server
     @Override
     public WsClientConnection connect(final HttpResponseHandler callback, final String url, final List<HttpParam> lParamQuery) throws RestException {
 
@@ -401,7 +400,7 @@ public class NettyHttpClient implements HttpClient, WsClient, WsClientAutoReconn
         }
         return this.wsClientConnection;
     }
-    
+
     /**
      * Checks if a response is okay.
      * All 2XX responses are supposed to be okay.
@@ -421,7 +420,6 @@ public class NettyHttpClient implements HttpClient, WsClient, WsClientAutoReconn
         }
 
     }
-
 
     @Override
     public void reconnectWs(Throwable cause) {
