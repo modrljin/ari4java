@@ -1,8 +1,8 @@
 *.class
 /bin/
+/codegen-bin/
 /tmp/
 /.settings
 /.classpath
 /.project
 /.gradle
-/codegen-bin/
