@@ -1,5 +1,0 @@
-includeBuild('codegen') {
-	dependencySubstitution {
-        substitute module('ari4java:codegen') with project(':')
-    }
-}

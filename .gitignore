@@ -1,25 +1,8 @@
 *.class
-
-# Package Files #
-# *.jar
-*.war
-*.ear
-
-# ari4java/*
-build/*
-# dist/*
-# nbproject/*
-# libs/*
-
-manifest.mf
-build.xml
-
+/bin/
+/tmp/
 /.settings
 /.classpath
 /.project
 /.gradle
-# /.nb-gradle
-
-# macbook
-.DS_Store
-/tmp/
+/codegen-bin/
