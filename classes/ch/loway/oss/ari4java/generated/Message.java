@@ -3,7 +3,7 @@ package ch.loway.oss.ari4java.generated;
 // ----------------------------------------------------
 //      THIS CLASS WAS GENERATED AUTOMATICALLY         
 //               PLEASE DO NOT EDIT                    
-//    Generated on: Tue Jan 08 13:25:07 CET 2019
+//    Generated on: Thu Apr 04 11:36:30 CEST 2019
 // ----------------------------------------------------
 
 import java.util.Date;
@@ -37,7 +37,7 @@ public interface Message {
 /**********************************************************
  * The unique ID for the Asterisk instance that raised this event.
  * 
- * @since ari_2_0_0
+ * @since ari_1_10_0
  *********************************************************/
  public String getAsterisk_id();
 
@@ -47,7 +47,7 @@ public interface Message {
 /**********************************************************
  * The unique ID for the Asterisk instance that raised this event.
  * 
- * @since ari_2_0_0
+ * @since ari_1_10_0
  *********************************************************/
  public void setAsterisk_id(String val );
 

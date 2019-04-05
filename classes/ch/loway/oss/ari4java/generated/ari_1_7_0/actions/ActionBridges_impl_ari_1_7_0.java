@@ -3,7 +3,7 @@ package ch.loway.oss.ari4java.generated.ari_1_7_0.actions;
 // ----------------------------------------------------
 //      THIS CLASS WAS GENERATED AUTOMATICALLY         
 //               PLEASE DO NOT EDIT                    
-//    Generated on: Tue Jan 08 13:25:08 CET 2019
+//    Generated on: Thu Apr 04 11:36:31 CEST 2019
 // ----------------------------------------------------
 
 import ch.loway.oss.ari4java.generated.Module;
@@ -368,7 +368,7 @@ httpActionAsync(callback);
 /**********************************************************
  * 
  * 
- * @since ari_2_0_0
+ * @since ari_1_10_0
  *********************************************************/
 public void setVideoSource(String bridgeId, String channelId, AriCallback<Void> callback){
   throw new UnsupportedOperationException("Method availble from ...");
@@ -435,7 +435,7 @@ public void create(String type, String name, AriCallback<Bridge> callback){
  * Set a channel as the video source in a multi-party mixing bridge. This operation has no effect on bridges with two or fewer participants.
  * 
  * 
- * @since ari_2_0_0
+ * @since ari_1_10_0
  *********************************************************/
 public void setVideoSource(String bridgeId, String channelId) throws RestException{
   throw new UnsupportedOperationException("Method availble from ...");
@@ -444,7 +444,7 @@ public void setVideoSource(String bridgeId, String channelId) throws RestExcepti
 /**********************************************************
  * 
  * 
- * @since ari_2_0_0
+ * @since ari_1_10_0
  *********************************************************/
 public void clearVideoSource(String bridgeId, AriCallback<Void> callback){
   throw new UnsupportedOperationException("Method availble from ...");
@@ -473,7 +473,7 @@ public Bridge create_or_update_with_id(String type, String bridgeId, String name
  * Removes any explicit video source in a multi-party mixing bridge. This operation has no effect on bridges with two or fewer participants. When no explicit video source is set, talk detection will be used to determine the active video stream.
  * 
  * 
- * @since ari_2_0_0
+ * @since ari_1_10_0
  *********************************************************/
 public void clearVideoSource(String bridgeId) throws RestException{
   throw new UnsupportedOperationException("Method availble from ...");

@@ -3,7 +3,7 @@ package ch.loway.oss.ari4java.generated;
 // ----------------------------------------------------
 //      THIS CLASS WAS GENERATED AUTOMATICALLY         
 //               PLEASE DO NOT EDIT                    
-//    Generated on: Tue Jan 08 13:25:07 CET 2019
+//    Generated on: Thu Apr 04 11:36:30 CEST 2019
 // ----------------------------------------------------
 
 import java.util.Date;
@@ -37,7 +37,7 @@ public void create(String type, String bridgeId, String name, AriCallback<Bridge
 /**********************************************************
  * 
  * 
- * @since ari_2_0_0
+ * @since ari_1_10_0
  *********************************************************/
 public void setVideoSource(String bridgeId, String channelId, AriCallback<Void> callback);
 
@@ -237,7 +237,7 @@ public void addChannel(String bridgeId, String channel, String role, AriCallback
  * Set a channel as the video source in a multi-party mixing bridge. This operation has no effect on bridges with two or fewer participants.
  * 
  * 
- * @since ari_2_0_0
+ * @since ari_1_10_0
  *********************************************************/
 public void setVideoSource(String bridgeId, String channelId) throws RestException;
 
@@ -279,7 +279,7 @@ public Playback playWithId(String bridgeId, String playbackId, String media, Str
 /**********************************************************
  * 
  * 
- * @since ari_2_0_0
+ * @since ari_1_10_0
  *********************************************************/
 public void clearVideoSource(String bridgeId, AriCallback<Void> callback);
 
@@ -373,7 +373,7 @@ public void startMoh(String bridgeId, String mohClass, AriCallback<Void> callbac
  * Removes any explicit video source in a multi-party mixing bridge. This operation has no effect on bridges with two or fewer participants. When no explicit video source is set, talk detection will be used to determine the active video stream.
  * 
  * 
- * @since ari_2_0_0
+ * @since ari_1_10_0
  *********************************************************/
 public void clearVideoSource(String bridgeId) throws RestException;
 

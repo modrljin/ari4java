@@ -3,7 +3,7 @@ package ch.loway.oss.ari4java.generated;
 // ----------------------------------------------------
 //      THIS CLASS WAS GENERATED AUTOMATICALLY         
 //               PLEASE DO NOT EDIT                    
-//    Generated on: Tue Jan 08 13:25:07 CET 2019
+//    Generated on: Thu Apr 04 11:36:30 CEST 2019
 // ----------------------------------------------------
 
 import java.util.Date;
@@ -172,6 +172,16 @@ public void loadModule(String moduleName) throws RestException;
 
 
 
+// void ping AriCallback<AsteriskPing> callback
+/**********************************************************
+ * 
+ * 
+ * @since ari_1_10_0
+ *********************************************************/
+public void ping(AriCallback<AsteriskPing> callback);
+
+
+
 // void unloadModule String
 /**********************************************************
  * Unload an Asterisk module.
@@ -264,6 +274,17 @@ public void listLogChannels(AriCallback<List<LogChannel>> callback);
  * @since ari_1_9_0
  *********************************************************/
 public void addLog(String logChannelName, String configuration) throws RestException;
+
+
+
+// AsteriskPing ping
+/**********************************************************
+ * Response pong message.
+ * 
+ * 
+ * @since ari_1_10_0
+ *********************************************************/
+public AsteriskPing ping() throws RestException;
 
 
 

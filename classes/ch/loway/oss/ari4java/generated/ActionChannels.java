@@ -3,7 +3,7 @@ package ch.loway.oss.ari4java.generated;
 // ----------------------------------------------------
 //      THIS CLASS WAS GENERATED AUTOMATICALLY         
 //               PLEASE DO NOT EDIT                    
-//    Generated on: Tue Jan 08 13:25:07 CET 2019
+//    Generated on: Thu Apr 04 11:36:30 CEST 2019
 // ----------------------------------------------------
 
 import java.util.Date;
@@ -193,7 +193,7 @@ public void setChannelVar(String channelId, String variable, String value) throw
 /**********************************************************
  * 
  * 
- * @since ari_2_0_0
+ * @since ari_1_10_0
  *********************************************************/
 public void originateWithId(String channelId, String endpoint, String extension, String context, long priority, String label, String app, String appArgs, String callerId, int timeout, Map<String,String> variables, String otherChannelId, String originator, String formats, AriCallback<Channel> callback);
 
@@ -266,7 +266,7 @@ public void continueInDialplan(String channelId, String context, String extensio
  * Create a new channel (originate).
  * The new channel is created immediately and a snapshot of it returned. If a Stasis application is provided it will be automatically subscribed to the originated channel for further events and updates.
  * 
- * @since ari_2_0_0
+ * @since ari_1_10_0
  *********************************************************/
 public Channel originate(String endpoint, String extension, String context, long priority, String label, String app, String appArgs, String callerId, int timeout, Map<String,String> variables, String channelId, String otherChannelId, String originator, String formats) throws RestException;
 
@@ -511,7 +511,7 @@ public void stopSilence(String channelId, AriCallback<Void> callback);
  * Create a new channel (originate with id).
  * The new channel is created immediately and a snapshot of it returned. If a Stasis application is provided it will be automatically subscribed to the originated channel for further events and updates.
  * 
- * @since ari_2_0_0
+ * @since ari_1_10_0
  *********************************************************/
 public Channel originateWithId(String channelId, String endpoint, String extension, String context, long priority, String label, String app, String appArgs, String callerId, int timeout, Map<String,String> variables, String otherChannelId, String originator, String formats) throws RestException;
 
@@ -762,7 +762,7 @@ public void hold(String channelId, AriCallback<Void> callback);
 /**********************************************************
  * 
  * 
- * @since ari_2_0_0
+ * @since ari_1_10_0
  *********************************************************/
 public void originate(String endpoint, String extension, String context, long priority, String label, String app, String appArgs, String callerId, int timeout, Map<String,String> variables, String channelId, String otherChannelId, String originator, String formats, AriCallback<Channel> callback);
 

@@ -3,7 +3,7 @@ package ch.loway.oss.ari4java.generated.ari_0_0_1.models;
 // ----------------------------------------------------
 //      THIS CLASS WAS GENERATED AUTOMATICALLY         
 //               PLEASE DO NOT EDIT                    
-//    Generated on: Tue Jan 08 13:25:07 CET 2019
+//    Generated on: Thu Apr 04 11:36:30 CEST 2019
 // ----------------------------------------------------
 
 import ch.loway.oss.ari4java.generated.*;
@@ -82,7 +82,7 @@ private static final long serialVersionUID = 1L;
 /**********************************************************
  * The ID of the channel that is the source of video in this bridge, if one exists.
  * 
- * @since ari_2_0_0
+ * @since ari_1_10_0
  *********************************************************/
  public String getVideo_source_id(){
   throw new UnsupportedOperationException("Method availble from ...");
@@ -91,7 +91,7 @@ private static final long serialVersionUID = 1L;
 /**********************************************************
  * The video mode the bridge is using. One of 'none', 'talker', or 'single'.
  * 
- * @since ari_2_0_0
+ * @since ari_1_10_0
  *********************************************************/
  public String getVideo_mode(){
   throw new UnsupportedOperationException("Method availble from ...");
@@ -109,7 +109,7 @@ private static final long serialVersionUID = 1L;
 /**********************************************************
  * The ID of the channel that is the source of video in this bridge, if one exists.
  * 
- * @since ari_2_0_0
+ * @since ari_1_10_0
  *********************************************************/
  public void setVideo_source_id(String val ){
   throw new UnsupportedOperationException("Method availble from ...");
@@ -127,7 +127,7 @@ private static final long serialVersionUID = 1L;
 /**********************************************************
  * The video mode the bridge is using. One of 'none', 'talker', or 'single'.
  * 
- * @since ari_2_0_0
+ * @since ari_1_10_0
  *********************************************************/
  public void setVideo_mode(String val ){
   throw new UnsupportedOperationException("Method availble from ...");

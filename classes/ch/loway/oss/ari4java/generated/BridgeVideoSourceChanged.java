@@ -3,7 +3,7 @@ package ch.loway.oss.ari4java.generated;
 // ----------------------------------------------------
 //      THIS CLASS WAS GENERATED AUTOMATICALLY         
 //               PLEASE DO NOT EDIT                    
-//    Generated on: Tue Jan 08 13:25:07 CET 2019
+//    Generated on: Thu Apr 04 11:36:30 CEST 2019
 // ----------------------------------------------------
 
 import java.util.Date;
@@ -27,7 +27,7 @@ public interface BridgeVideoSourceChanged extends Event  {
 /**********************************************************
  * 
  * 
- * @since ari_2_0_0
+ * @since ari_1_10_0
  *********************************************************/
  public void setOld_video_source_id(String val );
 
@@ -37,7 +37,7 @@ public interface BridgeVideoSourceChanged extends Event  {
 /**********************************************************
  * 
  * 
- * @since ari_2_0_0
+ * @since ari_1_10_0
  *********************************************************/
  public String getOld_video_source_id();
 
@@ -47,7 +47,7 @@ public interface BridgeVideoSourceChanged extends Event  {
 /**********************************************************
  * 
  * 
- * @since ari_2_0_0
+ * @since ari_1_10_0
  *********************************************************/
  public void setBridge(Bridge val );
 
@@ -57,7 +57,7 @@ public interface BridgeVideoSourceChanged extends Event  {
 /**********************************************************
  * 
  * 
- * @since ari_2_0_0
+ * @since ari_1_10_0
  *********************************************************/
  public Bridge getBridge();
 
