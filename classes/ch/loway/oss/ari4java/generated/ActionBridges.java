@@ -3,7 +3,7 @@ package ch.loway.oss.ari4java.generated;
 // ----------------------------------------------------
 //      THIS CLASS WAS GENERATED AUTOMATICALLY         
 //               PLEASE DO NOT EDIT                    
-//    Generated on: Thu Apr 04 11:36:30 CEST 2019
+//    Generated on: Fri Oct 04 11:51:52 CEST 2019
 // ----------------------------------------------------
 
 import java.util.Date;
@@ -71,6 +71,17 @@ public void create(String type, AriCallback<Bridge> callback);
  * @since ari_0_0_1
  *********************************************************/
 public List<Bridge> list() throws RestException;
+
+
+
+// void addChannel String String String boolean boolean
+/**********************************************************
+ * Add a channel to a bridge.
+ * 
+ * 
+ * @since ari_4_0_0
+ *********************************************************/
+public void addChannel(String bridgeId, String channel, String role, boolean absorbDTMF, boolean mute) throws RestException;
 
 
 
@@ -219,6 +230,16 @@ public void play(String bridgeId, String media, String lang, int offsetms, int s
  * @since ari_1_0_0
  *********************************************************/
 public void create(String type, String name, AriCallback<Bridge> callback);
+
+
+
+// void addChannel String String String boolean boolean AriCallback<Void> callback
+/**********************************************************
+ * 
+ * 
+ * @since ari_4_0_0
+ *********************************************************/
+public void addChannel(String bridgeId, String channel, String role, boolean absorbDTMF, boolean mute, AriCallback<Void> callback);
 
 
 

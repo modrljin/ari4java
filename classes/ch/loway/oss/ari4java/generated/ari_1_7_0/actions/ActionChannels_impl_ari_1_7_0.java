@@ -3,7 +3,7 @@ package ch.loway.oss.ari4java.generated.ari_1_7_0.actions;
 // ----------------------------------------------------
 //      THIS CLASS WAS GENERATED AUTOMATICALLY         
 //               PLEASE DO NOT EDIT                    
-//    Generated on: Thu Apr 04 11:36:31 CEST 2019
+//    Generated on: Fri Oct 04 11:51:52 CEST 2019
 // ----------------------------------------------------
 
 import ch.loway.oss.ari4java.generated.Module;
@@ -757,6 +757,16 @@ public void dial(String channelId, String caller, int timeout, AriCallback<Void>
 };
 
 /**********************************************************
+ * RTP stats on a channel.
+ * 
+ * 
+ * @since ari_4_0_0
+ *********************************************************/
+public RTPstat rtpstatistics(String channelId) throws RestException{
+  throw new UnsupportedOperationException("Method availble from ...");
+};
+
+/**********************************************************
  * 
  * 
  * @since ari_0_0_1
@@ -905,9 +915,37 @@ public Channel originateWithId(String channelId, String endpoint, String extensi
 /**********************************************************
  * 
  * 
+ * @since ari_4_0_0
+ *********************************************************/
+public void rtpstatistics(String channelId, AriCallback<RTPstat> callback){
+  throw new UnsupportedOperationException("Method availble from ...");
+};
+
+/**********************************************************
+ * 
+ * 
  * @since ari_2_0_0
  *********************************************************/
 public void create(String endpoint, String app, String appArgs, String channelId, String otherChannelId, String originator, String formats, AriCallback<Channel> callback){
+  throw new UnsupportedOperationException("Method availble from ...");
+};
+
+/**********************************************************
+ * Move the channel from one Stasis application to another.
+ * 
+ * 
+ * @since ari_4_0_0
+ *********************************************************/
+public void move(String channelId, String app, String appArgs) throws RestException{
+  throw new UnsupportedOperationException("Method availble from ...");
+};
+
+/**********************************************************
+ * 
+ * 
+ * @since ari_4_0_0
+ *********************************************************/
+public void move(String channelId, String app, String appArgs, AriCallback<Void> callback){
   throw new UnsupportedOperationException("Method availble from ...");
 };
 

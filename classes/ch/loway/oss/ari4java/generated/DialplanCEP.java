@@ -3,7 +3,7 @@ package ch.loway.oss.ari4java.generated;
 // ----------------------------------------------------
 //      THIS CLASS WAS GENERATED AUTOMATICALLY         
 //               PLEASE DO NOT EDIT                    
-//    Generated on: Thu Apr 04 11:36:30 CEST 2019
+//    Generated on: Fri Oct 04 11:51:52 CEST 2019
 // ----------------------------------------------------
 
 import java.util.Date;
@@ -23,6 +23,16 @@ import ch.loway.oss.ari4java.generated.Module;
 
 public interface DialplanCEP {
 
+// void setApp_name String
+/**********************************************************
+ * Name of current dialplan application
+ * 
+ * @since ari_4_0_0
+ *********************************************************/
+ public void setApp_name(String val );
+
+
+
 // void setContext String
 /**********************************************************
  * Context in the dialplan
@@ -33,6 +43,16 @@ public interface DialplanCEP {
 
 
 
+// String getApp_name
+/**********************************************************
+ * Name of current dialplan application
+ * 
+ * @since ari_4_0_0
+ *********************************************************/
+ public String getApp_name();
+
+
+
 // long getPriority
 /**********************************************************
  * Priority in the dialplan
@@ -40,6 +60,16 @@ public interface DialplanCEP {
  * @since ari_0_0_1
  *********************************************************/
  public long getPriority();
+
+
+
+// void setApp_data String
+/**********************************************************
+ * Parameter of current dialplan application
+ * 
+ * @since ari_4_0_0
+ *********************************************************/
+ public void setApp_data(String val );
 
 
 
@@ -70,6 +100,16 @@ public interface DialplanCEP {
  * @since ari_0_0_1
  *********************************************************/
  public String getContext();
+
+
+
+// String getApp_data
+/**********************************************************
+ * Parameter of current dialplan application
+ * 
+ * @since ari_4_0_0
+ *********************************************************/
+ public String getApp_data();
 
 
 

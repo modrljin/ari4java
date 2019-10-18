@@ -3,7 +3,7 @@ package ch.loway.oss.ari4java.generated;
 // ----------------------------------------------------
 //      THIS CLASS WAS GENERATED AUTOMATICALLY         
 //               PLEASE DO NOT EDIT                    
-//    Generated on: Thu Apr 04 11:36:30 CEST 2019
+//    Generated on: Fri Oct 04 11:51:52 CEST 2019
 // ----------------------------------------------------
 
 import java.util.Date;
@@ -51,6 +51,17 @@ public void originateWithId(String channelId, String endpoint, String extension,
  * @since ari_0_0_1
  *********************************************************/
 public void ring(String channelId) throws RestException;
+
+
+
+// RTPstat rtpstatistics String
+/**********************************************************
+ * RTP stats on a channel.
+ * 
+ * 
+ * @since ari_4_0_0
+ *********************************************************/
+public RTPstat rtpstatistics(String channelId) throws RestException;
 
 
 
@@ -570,6 +581,16 @@ public void answer(String channelId) throws RestException;
 
 
 
+// void rtpstatistics String AriCallback<RTPstat> callback
+/**********************************************************
+ * 
+ * 
+ * @since ari_4_0_0
+ *********************************************************/
+public void rtpstatistics(String channelId, AriCallback<RTPstat> callback);
+
+
+
 // void list AriCallback<List<Channel>> callback
 /**********************************************************
  * 
@@ -601,6 +622,17 @@ public void hold(String channelId) throws RestException;
 
 
 
+// void move String String String
+/**********************************************************
+ * Move the channel from one Stasis application to another.
+ * 
+ * 
+ * @since ari_4_0_0
+ *********************************************************/
+public void move(String channelId, String app, String appArgs) throws RestException;
+
+
+
 // void setChannelVar String String String AriCallback<Void> callback
 /**********************************************************
  * 
@@ -608,6 +640,16 @@ public void hold(String channelId) throws RestException;
  * @since ari_0_0_1
  *********************************************************/
 public void setChannelVar(String channelId, String variable, String value, AriCallback<Void> callback);
+
+
+
+// void move String String String AriCallback<Void> callback
+/**********************************************************
+ * 
+ * 
+ * @since ari_4_0_0
+ *********************************************************/
+public void move(String channelId, String app, String appArgs, AriCallback<Void> callback);
 
 
 

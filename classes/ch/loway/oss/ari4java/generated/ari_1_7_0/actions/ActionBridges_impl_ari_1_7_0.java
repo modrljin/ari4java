@@ -3,7 +3,7 @@ package ch.loway.oss.ari4java.generated.ari_1_7_0.actions;
 // ----------------------------------------------------
 //      THIS CLASS WAS GENERATED AUTOMATICALLY         
 //               PLEASE DO NOT EDIT                    
-//    Generated on: Thu Apr 04 11:36:31 CEST 2019
+//    Generated on: Fri Oct 04 11:51:52 CEST 2019
 // ----------------------------------------------------
 
 import ch.loway.oss.ari4java.generated.Module;
@@ -384,6 +384,16 @@ public void create(String type, AriCallback<Bridge> callback){
 };
 
 /**********************************************************
+ * Add a channel to a bridge.
+ * 
+ * 
+ * @since ari_4_0_0
+ *********************************************************/
+public void addChannel(String bridgeId, String channel, String role, boolean absorbDTMF, boolean mute) throws RestException{
+  throw new UnsupportedOperationException("Method availble from ...");
+};
+
+/**********************************************************
  * Create a new bridge.
  * This bridge persists until it has been shut down, or Asterisk has been shut down.
  * 
@@ -428,6 +438,15 @@ public Playback play(String bridgeId, String media, String lang, int offsetms, i
  * @since ari_1_0_0
  *********************************************************/
 public void create(String type, String name, AriCallback<Bridge> callback){
+  throw new UnsupportedOperationException("Method availble from ...");
+};
+
+/**********************************************************
+ * 
+ * 
+ * @since ari_4_0_0
+ *********************************************************/
+public void addChannel(String bridgeId, String channel, String role, boolean absorbDTMF, boolean mute, AriCallback<Void> callback){
   throw new UnsupportedOperationException("Method availble from ...");
 };
 

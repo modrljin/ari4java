@@ -3,7 +3,7 @@ package ch.loway.oss.ari4java.generated.ari_1_5_0.actions;
 // ----------------------------------------------------
 //      THIS CLASS WAS GENERATED AUTOMATICALLY         
 //               PLEASE DO NOT EDIT                    
-//    Generated on: Thu Apr 04 11:36:31 CEST 2019
+//    Generated on: Fri Oct 04 11:51:52 CEST 2019
 // ----------------------------------------------------
 
 import ch.loway.oss.ari4java.generated.Module;
@@ -136,6 +136,24 @@ buildUnsubscribe(applicationName, eventSource);
 httpActionAsync(callback, Application_impl_ari_1_5_0.class);
 }
 
-/** No missing signatures from interface */
+/**********************************************************
+ * 
+ * 
+ * @since ari_4_0_0
+ *********************************************************/
+public void filter(String applicationName, String filter, AriCallback<Application> callback){
+  throw new UnsupportedOperationException("Method availble from ...");
+};
+
+/**********************************************************
+ * Filter application events types.
+ * Allowed and/or disallowed event type filtering can be done. The body (parameter) should specify a JSON key/value object that describes the type of event filtering needed. One, or both of the following keys can be designated:<br /><br />"allowed" - Specifies an allowed list of event types<br />"disallowed" - Specifies a disallowed list of event types<br /><br />Further, each of those key's value should be a JSON array that holds zero, or more JSON key/value objects. Each of these objects must contain the following key with an associated value:<br /><br />"type" - The type name of the event to filter<br /><br />The value must be the string name (case sensitive) of the event type that needs filtering. For example:<br /><br />{ "allowed": [ { "type": "StasisStart" }, { "type": "StasisEnd" } ] }<br /><br />As this specifies only an allowed list, then only those two event type messages are sent to the application. No other event messages are sent.<br /><br />The following rules apply:<br /><br />* If the body is empty, both the allowed and disallowed filters are set empty.<br />* If both list types are given then both are set to their respective values (note, specifying an empty array for a given type sets that type to empty).<br />* If only one list type is given then only that type is set. The other type is not updated.<br />* An empty "allowed" list means all events are allowed.<br />* An empty "disallowed" list means no events are disallowed.<br />* Disallowed events take precedence over allowed events if the event type is specified in both lists.
+ * 
+ * @since ari_4_0_0
+ *********************************************************/
+public Application filter(String applicationName, String filter) throws RestException{
+  throw new UnsupportedOperationException("Method availble from ...");
+};
+
 };
 

@@ -3,7 +3,7 @@ package ch.loway.oss.ari4java.generated;
 // ----------------------------------------------------
 //      THIS CLASS WAS GENERATED AUTOMATICALLY         
 //               PLEASE DO NOT EDIT                    
-//    Generated on: Thu Apr 04 11:36:30 CEST 2019
+//    Generated on: Fri Oct 04 11:51:52 CEST 2019
 // ----------------------------------------------------
 
 import ch.loway.oss.ari4java.ARI;
@@ -20,6 +20,7 @@ public interface AriBuilder {
     public abstract ActionRecordings actionRecordings();
     public abstract ActionSounds actionSounds();
     public abstract Application application();
+    public abstract ApplicationMoveFailed applicationMoveFailed();
     public abstract ApplicationReplaced applicationReplaced();
     public abstract AsteriskInfo asteriskInfo();
     public abstract AsteriskPing asteriskPing();
@@ -73,6 +74,7 @@ public interface AriBuilder {
     public abstract PlaybackContinuing playbackContinuing();
     public abstract PlaybackFinished playbackFinished();
     public abstract PlaybackStarted playbackStarted();
+    public abstract RTPstat rTPstat();
     public abstract RecordingFailed recordingFailed();
     public abstract RecordingFinished recordingFinished();
     public abstract RecordingStarted recordingStarted();

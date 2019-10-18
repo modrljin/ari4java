@@ -3,7 +3,7 @@ package ch.loway.oss.ari4java.generated.ari_1_8_0.models;
 // ----------------------------------------------------
 //      THIS CLASS WAS GENERATED AUTOMATICALLY         
 //               PLEASE DO NOT EDIT                    
-//    Generated on: Thu Apr 04 11:36:31 CEST 2019
+//    Generated on: Fri Oct 04 11:51:52 CEST 2019
 // ----------------------------------------------------
 
 import ch.loway.oss.ari4java.generated.*;
@@ -77,6 +77,41 @@ private static final long serialVersionUID = 1L;
    name = val;
  }
 
-/** No missing signatures from interface */
+/**********************************************************
+ * Event types sent to the application.
+ * 
+ * @since ari_4_0_0
+ *********************************************************/
+ public List<String> getEvents_allowed(){
+  throw new UnsupportedOperationException("Method availble from ...");
+};
+
+/**********************************************************
+ * Event types not sent to the application.
+ * 
+ * @since ari_4_0_0
+ *********************************************************/
+ public void setEvents_disallowed(List<String> val ){
+  throw new UnsupportedOperationException("Method availble from ...");
+};
+
+/**********************************************************
+ * Event types not sent to the application.
+ * 
+ * @since ari_4_0_0
+ *********************************************************/
+ public List<String> getEvents_disallowed(){
+  throw new UnsupportedOperationException("Method availble from ...");
+};
+
+/**********************************************************
+ * Event types sent to the application.
+ * 
+ * @since ari_4_0_0
+ *********************************************************/
+ public void setEvents_allowed(List<String> val ){
+  throw new UnsupportedOperationException("Method availble from ...");
+};
+
 }
 

@@ -3,7 +3,7 @@ package ch.loway.oss.ari4java.generated;
 // ----------------------------------------------------
 //      THIS CLASS WAS GENERATED AUTOMATICALLY         
 //               PLEASE DO NOT EDIT                    
-//    Generated on: Thu Apr 04 11:36:30 CEST 2019
+//    Generated on: Fri Oct 04 11:51:52 CEST 2019
 // ----------------------------------------------------
 
 import java.util.Date;
@@ -73,6 +73,26 @@ public interface Application {
 
 
 
+// List<String> getEvents_disallowed
+/**********************************************************
+ * Event types not sent to the application.
+ * 
+ * @since ari_4_0_0
+ *********************************************************/
+ public List<String> getEvents_disallowed();
+
+
+
+// List<String> getEvents_allowed
+/**********************************************************
+ * Event types sent to the application.
+ * 
+ * @since ari_4_0_0
+ *********************************************************/
+ public List<String> getEvents_allowed();
+
+
+
 // List<String> getEndpoint_ids
 /**********************************************************
  * {tech}/{resource} for endpoints subscribed to.
@@ -113,6 +133,16 @@ public interface Application {
 
 
 
+// void setEvents_disallowed List<String>
+/**********************************************************
+ * Event types not sent to the application.
+ * 
+ * @since ari_4_0_0
+ *********************************************************/
+ public void setEvents_disallowed(List<String> val );
+
+
+
 // List<String> getDevice_names
 /**********************************************************
  * Names of the devices subscribed to.
@@ -120,6 +150,16 @@ public interface Application {
  * @since ari_0_0_1
  *********************************************************/
  public List<String> getDevice_names();
+
+
+
+// void setEvents_allowed List<String>
+/**********************************************************
+ * Event types sent to the application.
+ * 
+ * @since ari_4_0_0
+ *********************************************************/
+ public void setEvents_allowed(List<String> val );
 
 
 }

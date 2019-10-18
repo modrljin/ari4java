@@ -3,7 +3,7 @@ package ch.loway.oss.ari4java.generated;
 // ----------------------------------------------------
 //      THIS CLASS WAS GENERATED AUTOMATICALLY         
 //               PLEASE DO NOT EDIT                    
-//    Generated on: Thu Apr 04 11:36:30 CEST 2019
+//    Generated on: Fri Oct 04 11:51:52 CEST 2019
 // ----------------------------------------------------
 
 import java.util.Date;
@@ -173,6 +173,16 @@ public interface Bridge extends EventSource  {
 
 
 
+// Date getCreationtime
+/**********************************************************
+ * Timestamp when bridge was created
+ * 
+ * @since ari_4_0_0
+ *********************************************************/
+ public Date getCreationtime();
+
+
+
 // String getName
 /**********************************************************
  * Name the creator gave the bridge
@@ -180,6 +190,16 @@ public interface Bridge extends EventSource  {
  * @since ari_1_0_0
  *********************************************************/
  public String getName();
+
+
+
+// void setCreationtime Date
+/**********************************************************
+ * Timestamp when bridge was created
+ * 
+ * @since ari_4_0_0
+ *********************************************************/
+ public void setCreationtime(Date val );
 
 
 

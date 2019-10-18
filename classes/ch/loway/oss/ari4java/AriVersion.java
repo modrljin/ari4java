@@ -3,14 +3,15 @@ package ch.loway.oss.ari4java;
 import ch.loway.oss.ari4java.generated.AriBuilder;
 import ch.loway.oss.ari4java.generated.ari_0_0_1.AriBuilder_impl_ari_0_0_1;
 import ch.loway.oss.ari4java.generated.ari_1_0_0.AriBuilder_impl_ari_1_0_0;
+import ch.loway.oss.ari4java.generated.ari_1_10_0.AriBuilder_impl_ari_1_10_0;
 import ch.loway.oss.ari4java.generated.ari_1_5_0.AriBuilder_impl_ari_1_5_0;
 import ch.loway.oss.ari4java.generated.ari_1_6_0.AriBuilder_impl_ari_1_6_0;
 import ch.loway.oss.ari4java.generated.ari_1_7_0.AriBuilder_impl_ari_1_7_0;
 import ch.loway.oss.ari4java.generated.ari_1_8_0.AriBuilder_impl_ari_1_8_0;
 import ch.loway.oss.ari4java.generated.ari_1_9_0.AriBuilder_impl_ari_1_9_0;
-import ch.loway.oss.ari4java.generated.ari_1_10_0.AriBuilder_impl_ari_1_10_0;
 import ch.loway.oss.ari4java.generated.ari_2_0_0.AriBuilder_impl_ari_2_0_0;
 import ch.loway.oss.ari4java.generated.ari_3_0_0.AriBuilder_impl_ari_3_0_0;
+import ch.loway.oss.ari4java.generated.ari_4_0_0.AriBuilder_impl_ari_4_0_0;
 import ch.loway.oss.ari4java.tools.ARIException;
 
 /**
@@ -30,17 +31,18 @@ public enum AriVersion {
     ARI_1_10_0("1.10.0", new AriBuilder_impl_ari_1_10_0()), /** Asterisk 13.25.0 */
     ARI_2_0_0("2.0.0", new AriBuilder_impl_ari_2_0_0()), /** Asterisk 14.0.0 */
     ARI_3_0_0("3.0.0", new AriBuilder_impl_ari_3_0_0()), /** Asterisk 15.0.0 */
-
-    IM_FEELING_LUCKY ( "", null );
-
+    ARI_4_0_0("4.0.0", new AriBuilder_impl_ari_4_0_0()), /** Asterisk 16.0.0 */
+    
+    IM_FEELING_LUCKY ("", null);
+	
     final AriBuilder builder;
     final String versionString;
-
+    
     private AriVersion( String myVersion, AriBuilder ab ) {
         versionString = myVersion;
         builder = ab;
     }
-
+    
     /**
      * You cannot get a builder for IM_FEELING_LUCKY or similar.
      * If you try to do this, it s a logical error and you get an exception.
@@ -48,7 +50,6 @@ public enum AriVersion {
      * @return the builder object
      * @throws IllegalArgumentException
      */
-
     public AriBuilder builder() {
         if ( builder == null ) {
             throw new IllegalArgumentException("This version has no builder. Library error for :" + this.name());
@@ -56,7 +57,7 @@ public enum AriVersion {
             return builder;
         }
     }
-
+    
     /**
      * Return the correct version object from the signature string.
      * 
@@ -64,7 +65,6 @@ public enum AriVersion {
      * @return the inferred version.
      * @throws ARIException
      */
-
     public static AriVersion fromVersionString( String version ) throws ARIException {
 
         for ( AriVersion av: AriVersion.values() ) {
@@ -77,10 +77,8 @@ public enum AriVersion {
 
         throw new ARIException( "Unknown ARI Version object for " + version );
     }
-
+    
 	public String getVersionString() {
 		return versionString;
 	}
-
 }
-
